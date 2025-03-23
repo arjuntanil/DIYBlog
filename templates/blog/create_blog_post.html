@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Create Blog Post{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Create New Blog Post</h2>
+                    
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">Please correct the following errors:</h5>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                            <input type="text" name="{{ form.title.name }}"
+                                   class="form-control {% if form.title.errors %}is-invalid{% endif %}"
+                                   id="{{ form.title.id_for_label }}"
+                                   value="{{ form.title.value|default:'' }}"
+                                   required>
+                            {% if form.title.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.title.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Content -->
+                        <div class="mb-4">
+                            <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+                            <textarea name="{{ form.content.name }}"
+                                      class="form-control {% if form.content.errors %}is-invalid{% endif %}"
+                                      id="{{ form.content.id_for_label }}"
+                                      rows="10"
+                                      required>{{ form.content.value|default:'' }}</textarea>
+                            {% if form.content.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.content.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Audio File -->
+                        <div class="mb-4">
+                            <label for="{{ form.audio_file.id_for_label }}" class="form-label">
+                                <i class="fas fa-microphone me-1"></i>
+                                Audio Version (Optional)
+                            </label>
+                            <input type="file" name="{{ form.audio_file.name }}"
+                                   class="form-control {% if form.audio_file.errors %}is-invalid{% endif %}"
+                                   id="{{ form.audio_file.id_for_label }}"
+                                   accept="audio/*">
+                            {% if form.audio_file.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.audio_file.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Maximum file size: 10MB. Supported formats: MP3, WAV, OGG
+                            </small>
+                        </div>
+
+                        <!-- Password Protection -->
+                        <div class="mb-4">
+                            <div class="form-check mb-2">
+                                <input type="checkbox" name="{{ form.is_protected.name }}"
+                                       class="form-check-input {% if form.is_protected.errors %}is-invalid{% endif %}"
+                                       id="{{ form.is_protected.id_for_label }}"
+                                       {% if form.is_protected.value %}checked{% endif %}>
+                                <label class="form-check-label" for="{{ form.is_protected.id_for_label }}">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Password Protect this Post
+                                </label>
+                            </div>
+                            
+                            <div id="passwordField" class="mt-2" style="display: none;">
+                                <input type="password" name="{{ form.password.name }}"
+                                       class="form-control {% if form.password.errors %}is-invalid{% endif %}"
+                                       id="{{ form.password.id_for_label }}"
+                                       placeholder="Enter password for this post"
+                                       value="{{ form.password.value|default:'' }}">
+                                {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.password.errors|join:", " }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i>
+                                Publish Post
+                            </button>
+                            <a href="{% url 'blog-list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const isProtectedCheckbox = document.getElementById('{{ form.is_protected.id_for_label }}');
+    const passwordField = document.getElementById('passwordField');
+
+    function togglePasswordField() {
+        passwordField.style.display = isProtectedCheckbox.checked ? 'block' : 'none';
+        const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+        if (!isProtectedCheckbox.checked) {
+            passwordInput.value = '';
+        }
+    }
+
+    isProtectedCheckbox.addEventListener('change', togglePasswordField);
+    togglePasswordField(); // Initial state
+});
+</script>
+{% endblock %}

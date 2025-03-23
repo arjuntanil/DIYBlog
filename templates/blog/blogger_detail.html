@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ blogger.user.username }}'s Blogs{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Blogger Header -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h1 class="mb-3">{{ blogger.user.username }}'s Blogs</h1>
+            <div class="d-flex align-items-center text-muted mb-2">
+                <i class="fas fa-pencil-alt me-2"></i>
+                <span>Total Posts: {{ posts.count }}</span>
+                <i class="fas fa-heart ms-4 me-2"></i>
+                <span>Total Likes: 0</span>
+            </div>
+            {% if blogger.bio %}
+            <p class="lead mb-0">{{ blogger.bio }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Blog Posts List -->
+    {% if posts %}
+    <div class="list-group">
+        {% for post in posts %}
+        <a href="{% url 'blog-detail' post.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <h5 class="mb-1">{{ post.title }}</h5>
+                <small class="text-muted">
+                    {{ post.post_date|date:"F j, Y" }}
+                </small>
+            </div>
+            <div class="d-flex mt-2">
+                <small class="text-muted me-3">
+                    <i class="fas fa-heart me-1"></i>
+                    0 likes
+                </small>
+                <small class="text-muted">
+                    <i class="fas fa-comments me-1"></i>
+                    {{ post.comment_set.count }} comments
+                </small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        No blog posts yet.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

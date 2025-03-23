@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to DIYBlog{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center bg-light p-5 rounded-3">
+    <h1 class="display-4">Welcome to DIYBlog</h1>
+    <p class="lead">Share your DIY projects and ideas with our community!</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'create-blog' %}" class="btn btn-primary btn-lg">Create a Blog Post</a>
+    {% else %}
+    <a href="{% url 'register' %}" class="btn btn-success btn-lg">Join Our Community</a>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Community Stats</h5>
+                <p class="card-text">
+                    <i class="fas fa-blog"></i> Total Blog Posts: {{ num_posts }}<br>
+                    <i class="fas fa-users"></i> Active Bloggers: {{ num_bloggers }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Why DIYBlog?</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check text-success"></i> Share your DIY experiences</li>
+                    <li><i class="fas fa-check text-success"></i> Connect with fellow DIY enthusiasts</li>
+                    <li><i class="fas fa-check text-success"></i> Get inspired by amazing projects</li>
+                    <li><i class="fas fa-check text-success"></i> Interactive polls and discussions</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

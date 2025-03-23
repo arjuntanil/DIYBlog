@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Create an Account</h2>
+                    
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">Please correct the following errors:</h5>
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                            <input type="text" name="{{ form.username.name }}" 
+                                   class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                   id="{{ form.username.id_for_label }}"
+                                   value="{{ form.username.value|default:'' }}"
+                                   required>
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.username.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                            {% if form.username.help_text %}
+                            <small class="form-text text-muted">{{ form.username.help_text }}</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                            <input type="email" name="{{ form.email.name }}"
+                                   class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                                   id="{{ form.email.id_for_label }}"
+                                   value="{{ form.email.value|default:'' }}"
+                                   required>
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.email.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                            <input type="tel" name="{{ form.phone_number.name }}"
+                                   class="form-control {% if form.phone_number.errors %}is-invalid{% endif %}"
+                                   id="{{ form.phone_number.id_for_label }}"
+                                   value="{{ form.phone_number.value|default:'' }}"
+                                   required>
+                            {% if form.phone_number.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.phone_number.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth</label>
+                            <input type="date" name="{{ form.date_of_birth.name }}"
+                                   class="form-control {% if form.date_of_birth.errors %}is-invalid{% endif %}"
+                                   id="{{ form.date_of_birth.id_for_label }}"
+                                   value="{{ form.date_of_birth.value|date:'Y-m-d'|default:'' }}"
+                                   required>
+                            {% if form.date_of_birth.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.date_of_birth.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                            <textarea name="{{ form.bio.name }}"
+                                      class="form-control {% if form.bio.errors %}is-invalid{% endif %}"
+                                      id="{{ form.bio.id_for_label }}"
+                                      rows="3">{{ form.bio.value|default:'' }}</textarea>
+                            {% if form.bio.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.bio.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+                            <input type="password" name="{{ form.password1.name }}"
+                                   class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                                   id="{{ form.password1.id_for_label }}"
+                                   required>
+                            {% if form.password1.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password1.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                            <input type="password" name="{{ form.password2.name }}"
+                                   class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                                   id="{{ form.password2.id_for_label }}"
+                                   required>
+                            {% if form.password2.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password2.errors|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account? <a href="{% url 'login' %}" class="text-decoration-none">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
