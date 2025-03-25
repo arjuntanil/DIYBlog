@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-change-in-prod
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['diyblog-todp.onrender.com','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*', 'diyblog-todp.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -144,7 +144,8 @@ LOGOUT_REDIRECT_URL = '/'
 if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False  # Set to False for Render
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
