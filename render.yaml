@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: diyblog
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn diyblog.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: PYTHON_VERSION
+        value: 3.11.0 
